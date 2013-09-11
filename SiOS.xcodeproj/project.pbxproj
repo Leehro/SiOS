@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		37ED38A917E0DEC600D2EC9C /* GameController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37ED38A817E0DEC600D2EC9C /* GameController.framework */; };
+		37ED38AC17E0E7C400D2EC9C /* LMGameControllerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 37ED38AB17E0E7C400D2EC9C /* LMGameControllerManager.m */; };
 		A00403C114BE3E4D00FE28CE /* apu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A00401E514BE3E4D00FE28CE /* apu.cpp */; };
 		A00403C314BE3E4D00FE28CE /* SNES_SPC.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A00401F014BE3E4D00FE28CE /* SNES_SPC.cpp */; };
 		A00403C414BE3E4D00FE28CE /* SNES_SPC_misc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A00401F214BE3E4D00FE28CE /* SNES_SPC_misc.cpp */; };
@@ -140,6 +142,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		37ED38A817E0DEC600D2EC9C /* GameController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameController.framework; path = System/Library/Frameworks/GameController.framework; sourceTree = SDKROOT; };
+		37ED38AA17E0E7C400D2EC9C /* LMGameControllerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LMGameControllerManager.h; sourceTree = SOURCE_ROOT; };
+		37ED38AB17E0E7C400D2EC9C /* LMGameControllerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LMGameControllerManager.m; sourceTree = SOURCE_ROOT; };
 		A00401E314BE3E4D00FE28CE /* 65c816.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = 65c816.h; sourceTree = "<group>"; };
 		A00401E514BE3E4D00FE28CE /* apu.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = apu.cpp; sourceTree = "<group>"; };
 		A00401E614BE3E4D00FE28CE /* apu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = apu.h; sourceTree = "<group>"; };
@@ -392,6 +397,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				37ED38A917E0DEC600D2EC9C /* GameController.framework in Frameworks */,
 				A0A8A0FC14B25409003C5688 /* libz.dylib in Frameworks */,
 				A0A8A0FA14B25401003C5688 /* AudioToolbox.framework in Frameworks */,
 				A050663214B21DDB003E0C5E /* QuartzCore.framework in Frameworks */,
@@ -621,6 +627,7 @@
 		A050660A14B21C7F003E0C5E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				37ED38A817E0DEC600D2EC9C /* GameController.framework */,
 				A0A8A0F914B25401003C5688 /* AudioToolbox.framework */,
 				A050660F14B21C7F003E0C5E /* CoreGraphics.framework */,
 				A050660D14B21C7F003E0C5E /* Foundation.framework */,
@@ -647,6 +654,8 @@
 				A0B8685814BE25F900663EBE /* Artwork */,
 				A0995BCF14B5087600F7C44F /* SNES9XBridge */,
 				A00401E214BE3E4D00FE28CE /* SNES9X */,
+				37ED38AA17E0E7C400D2EC9C /* LMGameControllerManager.h */,
+				37ED38AB17E0E7C400D2EC9C /* LMGameControllerManager.m */,
 			);
 			name = SiOS;
 			path = pixelbuffertest;
@@ -925,6 +934,7 @@
 				A00403E414BE3E4D00FE28CE /* dsp4.cpp in Sources */,
 				A00403E514BE3E4D00FE28CE /* 2xsai.cpp in Sources */,
 				A00403E614BE3E4D00FE28CE /* blit.cpp in Sources */,
+				37ED38AC17E0E7C400D2EC9C /* LMGameControllerManager.m in Sources */,
 				A00403E714BE3E4D00FE28CE /* epx.cpp in Sources */,
 				A00403E814BE3E4D00FE28CE /* hq2x.cpp in Sources */,
 				A00403EA14BE3E4D00FE28CE /* snes_ntsc.c in Sources */,

@@ -30,6 +30,10 @@
 "VERSION" = "About";
 "PORT_OF" = "Based on";
 "BY" = "Developer";
+"APPLE_GAME_CONTROLLER_EXPLANATION" = "Experimental support for iOS 7-compatible Game Controllers";
+"APPLE_GAME_CONTROLLER" = "Game Controller";
+"SEARCHING_GAME_CONTROLLER" = "Searching...";
+"SEARCH_GAME_CONTROLLER" = "Search";
 
 // LMEmulatorController
 "BACK_TO_GAME" = "Back to game";

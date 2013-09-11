@@ -43,6 +43,8 @@ extern NSString* const kLMSettingsFrameskipValue;
   NSIndexPath* _frameskipValueIndexPath;
   
   id<LMSettingsControllerDelegate> _delegate;
+    
+  BOOL _searchingForControllers;
 }
 
 @property (assign) id<LMSettingsControllerDelegate> delegate;

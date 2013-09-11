@@ -9,6 +9,7 @@
 #import "LMAppDelegate.h"
 
 #import "LMROMBrowserController.h"
+#import "LMGameControllerManager.h"
 
 // TODO: LM: Open SMC, SFC, FIG, ZIP, SRM and FRZ files from other iOS apps
 // TODO: LM: Better save UI to allow for multiple slots
@@ -28,6 +29,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  [LMGameControllerManager sharedManager];
   self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
   
   LMROMBrowserController* romBrowser = [[LMROMBrowserController alloc] init];

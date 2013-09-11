@@ -14,6 +14,7 @@
 #import "LMTableViewCellDelegate.h"
 #import "LMTableViewNumberCell.h"
 #import "LMTableViewSwitchCell.h"
+#import <GameController/GameController.h>
 
 NSString* const kLMSettingsChangedNotification = @"SettingsChanged";
 
@@ -31,7 +32,9 @@ typedef enum _LMSettingsSections
   LMSettingsSectionScreen,
   LMSettingsSectionEmulation,
   LMSettingsSectionBluetoothController,
-  LMSettingsSectionAbout
+  LMSettingsSectionAppleGameController,
+  LMSettingsSectionAbout,
+  LMSettingsSectionCount
 } LMSettingsSections;
 
 @interface LMSettingsController(Privates) <LMTableViewCellDelegate, LMMultipleChoicePickerDelegate>
@@ -175,7 +178,7 @@ typedef enum _LMSettingsSections
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
   // Return the number of sections.
-  return 4;
+  return LMSettingsSectionCount;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -185,6 +188,8 @@ typedef enum _LMSettingsSections
     return 1;
   else if(section == LMSettingsSectionScreen)
     return 2;
+  else if(section == LMSettingsSectionAppleGameController)
+      return 1;
   else if(section == LMSettingsSectionEmulation)
   {
     if(_soundIndexPath == nil)
@@ -203,6 +208,8 @@ typedef enum _LMSettingsSections
     return NSLocalizedString(@"FULL_SCREEN_EXPLANATION", nil);
   else if(section == LMSettingsSectionEmulation)
     return NSLocalizedString(@"AUTO_FRAMESKIP_EXPLANATION", nil);
+  else if(section == LMSettingsSectionAppleGameController)
+    return NSLocalizedString(@"APPLE_GAME_CONTROLLER_EXPLANATION", nil);
   return nil;
 }
 
@@ -239,7 +246,25 @@ typedef enum _LMSettingsSections
       cell.detailTextLabel.text = controllerName;
     }
   }
-  if(section == LMSettingsSectionScreen)
+  else if(section == LMSettingsSectionAppleGameController)
+  {
+      if (indexPath.row == 0) {
+          static NSString* identifier = @"GameControllerCell";
+          cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
+          if (cell == nil)
+              cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identifier] autorelease];
+          cell.textLabel.text = NSLocalizedString(@"APPLE_GAME_CONTROLLER", nil);
+          NSString *controllerName = nil;
+          GCController *controller = [[GCController controllers] firstObject];
+          if (controller) {
+              controllerName = [controller vendorName];
+          } else {
+              controllerName = _searchingForControllers ? NSLocalizedString(@"SEARCHING_GAME_CONTROLLER", nil) : NSLocalizedString(@"SEARCH_GAME_CONTROLLER", nil);
+          }
+          cell.detailTextLabel.text = controllerName;
+      }
+  }
+  else if(section == LMSettingsSectionScreen)
   {
     if([indexPath compare:_smoothScalingIndexPath] == NSOrderedSame)
     {
@@ -354,6 +379,23 @@ typedef enum _LMSettingsSections
       [c release];
     }
   }
+  else if(section == LMSettingsSectionAppleGameController)
+  {
+      _searchingForControllers = !_searchingForControllers;
+      NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:LMSettingsSectionAppleGameController];
+      [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
+      __block LMSettingsController *blockSelf = self;
+      if(_searchingForControllers) {
+          [GCController startWirelessControllerDiscoveryWithCompletionHandler:^{
+              blockSelf->_searchingForControllers = NO;
+              NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:LMSettingsSectionAppleGameController];
+              [blockSelf.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
+          }];
+      } else {
+          [GCController stopWirelessControllerDiscovery]; // crashes on simulator!
+      }
+      [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+  }
 }
 
 @end
@@ -406,6 +448,14 @@ typedef enum _LMSettingsSections
   [super viewWillAppear:animated];
   
   [self.tableView reloadData];
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(controllerDidConnect:)
+                                               name:GCControllerDidConnectNotification
+                                             object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(controllerDidDisconnect:)
+                                               name:GCControllerDidDisconnectNotification
+                                             object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -415,6 +465,8 @@ typedef enum _LMSettingsSections
 
 - (void)viewWillDisappear:(BOOL)animated
 {
+  [GCController stopWirelessControllerDiscovery];
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
   [super viewWillDisappear:animated];
   
   [[NSUserDefaults standardUserDefaults] synchronize];
@@ -432,6 +484,16 @@ typedef enum _LMSettingsSections
     return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
   else
     return YES;
+}
+
+- (void)controllerDidConnect:(NSNotification *)notification {
+    NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:LMSettingsSectionAppleGameController];
+    [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
+}
+
+- (void)controllerDidDisconnect:(NSNotification *)notification {
+    NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:LMSettingsSectionAppleGameController];
+    [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
 @end
